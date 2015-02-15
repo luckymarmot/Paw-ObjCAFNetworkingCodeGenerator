@@ -1,19 +1,20 @@
 - (void)sendRequest:(id)sender
 {
 	// {{{request.name}}} ({{{request.method}}} {{{url.base}}})
-	
+
 	// Create manager
 	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-	
+
 	{{! ----- }}
 	{{#url.has_params}}
 	// Create request
 	NSDictionary* URLParams = @{
 	{{#url.params}}
-			@"{{{name}}}": @"{{{value}}}",
+		@"{{{name}}}": @"{{{value}}}",
 	{{/url.params}}
 	};
-	NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"{{{request.method}}}" URLString:@"{{{url.base}}}" parameters:URLParams error:nil];
+	NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"{{{request.method}}}" URLString:@"{{{url.base}}}" parameters:URLParams error:NULL];
+
 	{{/url.has_params}}
 	{{! ----- }}
 	{{#body.has_url_encoded_body}}
@@ -23,7 +24,8 @@
 		@"{{{name}}}": @"{{{value}}}",
 	{{/body.url_encoded_body}}
 	};
-	NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"{{{request.method}}}" URLString:@"{{{url.base}}}" parameters:bodyParameters error:nil];
+	NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"{{{request.method}}}" URLString:@"{{{url.base}}}" parameters:bodyParameters error:NULL];
+
 	{{/body.has_url_encoded_body}}
 	{{! ----- }}
 	{{#body.has_multipart_body}}
@@ -33,13 +35,15 @@
 		@"{{{name}}}": @"{{{value}}}",
 	{{/body.multipart_body}}
 	};
-	NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"{{{request.method}}}" URLString:@"{{{url.base}}}" parameters:bodyParameters constructingBodyWithBlock:nil error:nil];
+	NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"{{{request.method}}}" URLString:@"{{{url.base}}}" parameters:bodyParameters constructingBodyWithBlock:nil error:NULL];
+
 	{{/body.has_multipart_body}}
 	{{! ----- }}
 	{{#body.has_json_body}}
 	// JSON Body
 	{{{body.json_body_object}}}
-	NSMutableURLRequest* request = [[AFJSONRequestSerializer serializer] requestWithMethod:@"{{{request.method}}}" URLString:@"{{{url.base}}}" parameters:bodyObject error:nil];
+	NSMutableURLRequest* request = [[AFJSONRequestSerializer serializer] requestWithMethod:@"{{{request.method}}}" URLString:@"{{{url.base}}}" parameters:bodyObject error:NULL];
+
 	{{/body.has_json_body}}
 	{{! ----- }}
 	{{#body.has_raw_body}}
@@ -49,6 +53,7 @@
 	[request setHTTPMethod:@"{{{request.method}}}"];
 	[request setHTTPBody:[@"{{{body.raw_body}}}" dataUsingEncoding:NSUTF8StringEncoding]];
 	[request setValue: @"" forHTTPHeaderField:@"Content-Type"];
+
 	{{/body.has_raw_body}}
 	{{! ----- }}
 	{{#body.has_long_body}}
@@ -58,21 +63,22 @@
 	[request setHTTPMethod:@"{{{request.method}}}"];
 	[request setHTTPBody:@"Set your own body data" dataUsingEncoding:NSUTF8StringEncoding]];
 	[request setValue: @"" forHTTPHeaderField:@"Content-Type"];
+
 	{{/body.has_long_body}}
 	{{! ----- }}
 	{{#headers.has_headers}}
-	
 	// Add Headers
 	{{#headers.header_list}}
 	[request setValue:@"{{{header_value}}}" forHTTPHeaderField:@"{{{header_name}}}"];
 	{{/headers.header_list}}
+
 	{{/headers.has_headers}}
-	
+	{{! ----- }}
 	// Fetch Request
 	AFHTTPRequestOperation *operation = [manager HTTPRequestOperationWithRequest:request
 	  success:^(AFHTTPRequestOperation *operation, id responseObject) {
-	    NSLog(@"Response HTTP Status Code: %ld", [operation.response statusCode]);
-	    NSLog(@"Response HTTP Response Body: %@", responseObject);
+	    NSLog(@"HTTP Response Status Code: %ld", [operation.response statusCode]);
+	    NSLog(@"HTTP Response Body: %@", responseObject);
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 	    NSLog(@"HTTP Request failed: %@", error);
 	}];
