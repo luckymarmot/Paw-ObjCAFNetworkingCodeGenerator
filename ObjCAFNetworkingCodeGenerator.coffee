@@ -17,6 +17,7 @@ ObjCAFNetworkingCodeGenerator = ->
         } for name, value of url_params_object)
 
         return {
+            "fullpath" : request.url
             "base": addslashes (() ->
                 _uri = URI request.url
                 _uri.search("")
@@ -119,6 +120,8 @@ ObjCAFNetworkingCodeGenerator = ->
             "url": @url request
             "headers": @headers request
             "body": @body request
+            
+        view["has_params_and_body"] = true if view.url.has_params and view.body
 
         template = readFile "objc.mustache"
         Mustache.render template, view

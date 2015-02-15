@@ -6,6 +6,7 @@
 	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 
 	{{! ----- }}
+	{{^has_params_and_body}}
 	{{#url.has_params}}
 	// Create request
 	NSDictionary* URLParams = @{
@@ -13,9 +14,11 @@
 		@"{{{name}}}": @"{{{value}}}",
 	{{/url.params}}
 	};
+	
 	NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"{{{request.method}}}" URLString:@"{{{url.base}}}" parameters:URLParams error:NULL];
-
+	
 	{{/url.has_params}}
+	{{/has_params_and_body}}
 	{{! ----- }}
 	{{#body.has_url_encoded_body}}
 	// Form URL-Encoded Body
@@ -24,7 +27,13 @@
 		@"{{{name}}}": @"{{{value}}}",
 	{{/body.url_encoded_body}}
 	};
+	
+	{{^has_params_and_body}}
 	NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"{{{request.method}}}" URLString:@"{{{url.base}}}" parameters:bodyParameters error:NULL];
+	{{/has_params_and_body}}
+	{{#has_params_and_body}}
+	NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"{{{request.method}}}" URLString:@"{{{url.fullpath}}}" parameters:bodyParameters error:NULL];
+	{{/has_params_and_body}}
 
 	{{/body.has_url_encoded_body}}
 	{{! ----- }}
@@ -35,20 +44,32 @@
 		@"{{{name}}}": @"{{{value}}}",
 	{{/body.multipart_body}}
 	};
+	
+	{{^has_params_and_body}}
 	NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"{{{request.method}}}" URLString:@"{{{url.base}}}" parameters:bodyParameters constructingBodyWithBlock:nil error:NULL];
+	{{/has_params_and_body}}
+	{{#has_params_and_body}}
+	NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"{{{request.method}}}" URLString:@"{{{url.fullpath}}}" parameters:bodyParameters constructingBodyWithBlock:nil error:NULL];
+	{{/has_params_and_body}}
 
 	{{/body.has_multipart_body}}
 	{{! ----- }}
 	{{#body.has_json_body}}
 	// JSON Body
 	{{{body.json_body_object}}}
+	
+	{{^has_params_and_body}}
 	NSMutableURLRequest* request = [[AFJSONRequestSerializer serializer] requestWithMethod:@"{{{request.method}}}" URLString:@"{{{url.base}}}" parameters:bodyObject error:NULL];
+	{{/has_params_and_body}}
+	{{#has_params_and_body}}
+	NSMutableURLRequest* request = [[AFJSONRequestSerializer serializer] requestWithMethod:@"{{{request.method}}}" URLString:@"{{{url.fullpath}}}" parameters:bodyObject error:NULL];
+	{{/has_params_and_body}}
 
 	{{/body.has_json_body}}
 	{{! ----- }}
 	{{#body.has_raw_body}}
 	// Body
-	NSURL* URL = [NSURL URLWithString:@"{{{url.base}}}"];
+	NSURL* URL = [NSURL URLWithString:@"{{{url.fullpath}}}"];
 	NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:URL];
 	[request setHTTPMethod:@"{{{request.method}}}"];
 	[request setHTTPBody:[@"{{{body.raw_body}}}" dataUsingEncoding:NSUTF8StringEncoding]];
@@ -58,7 +79,7 @@
 	{{! ----- }}
 	{{#body.has_long_body}}
 	// Body
-	NSURL* URL = [NSURL URLWithString:@"{{{url.base}}}"];
+	NSURL* URL = [NSURL URLWithString:@"{{{url.fullpath}}}"];
 	NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:URL];
 	[request setHTTPMethod:@"{{{request.method}}}"];
 	[request setHTTPBody:@"Set your own body data" dataUsingEncoding:NSUTF8StringEncoding]];

@@ -30,7 +30,7 @@ void GETRequest()
 	// Fetch Request
 	AFHTTPRequestOperation *operation = [manager HTTPRequestOperationWithRequest:request
 																		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-																			 NSLog(@"Response HTTP Status Code: %ld", [operation.response statusCode]);
+																			 NSLog(@"HTTP Response Status Code: %ld", [operation.response statusCode]);
 																			 NSLog(@"Response HTTP Response Body: %@", responseObject);
 																		 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 																			 NSLog(@"HTTP Request failed: %@", error);
@@ -68,7 +68,7 @@ void POSTJsonRequest()
 	// Fetch Request
 	AFHTTPRequestOperation *operation = [manager HTTPRequestOperationWithRequest:request
 																		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-																			 NSLog(@"Response HTTP Status Code: %ld", [operation.response statusCode]);
+																			 NSLog(@"HTTP Response Status Code: %ld", [operation.response statusCode]);
 																			 NSLog(@"Response HTTP Response Body: %@", responseObject);
 																		 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 																			 NSLog(@"HTTP Request failed: %@", error);
@@ -80,26 +80,26 @@ void POSTJsonRequest()
 void POSTTextBody()
 {
 	// POST Text Body (POST http://httpbin.org/post)
-	
+
 	// Create manager
 	AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 	
 	// Body
-	NSURL* URL = [NSURL URLWithString:@"http://httpbin.org/post"];
+	NSURL* URL = [NSURL URLWithString:@"http://httpbin.org/post?param=param"];
 	NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:URL];
 	[request setHTTPMethod:@"POST"];
 	[request setHTTPBody:[@"Some text body" dataUsingEncoding:NSUTF8StringEncoding]];
 	[request setValue: @"" forHTTPHeaderField:@"Content-Type"];
-	
+
 	// Fetch Request
 	AFHTTPRequestOperation *operation = [manager HTTPRequestOperationWithRequest:request
-																		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-																			 NSLog(@"Response HTTP Status Code: %ld", [operation.response statusCode]);
-																			 NSLog(@"Response HTTP Response Body: %@", responseObject);
-																		 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-																			 NSLog(@"HTTP Request failed: %@", error);
-																		 }];
-	
+		success:^(AFHTTPRequestOperation *operation, id responseObject) {
+			NSLog(@"HTTP Response Status Code: %ld", [operation.response statusCode]);
+			NSLog(@"HTTP Response Body: %@", responseObject);
+	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+			NSLog(@"HTTP Request failed: %@", error);
+	}];
+
 	[manager.operationQueue addOperation:operation];
 }
 
@@ -120,7 +120,7 @@ void POSTLongTextBody()
 						  // Fetch Request
 						  AFHTTPRequestOperation *operation = [manager HTTPRequestOperationWithRequest:request
 																							   success:^(AFHTTPRequestOperation *operation, id responseObject) {
-																								   NSLog(@"Response HTTP Status Code: %ld", [operation.response statusCode]);
+																								   NSLog(@"HTTP Response Status Code: %ld", [operation.response statusCode]);
 																								   NSLog(@"Response HTTP Response Body: %@", responseObject);
 																							   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 																								   NSLog(@"HTTP Request failed: %@", error);
@@ -148,7 +148,7 @@ void POSTFormEncodedURLBody()
 	// Fetch Request
 	AFHTTPRequestOperation *operation = [manager HTTPRequestOperationWithRequest:request
 																		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-																			 NSLog(@"Response HTTP Status Code: %ld", [operation.response statusCode]);
+																			 NSLog(@"HTTP Response Status Code: %ld", [operation.response statusCode]);
 																			 NSLog(@"Response HTTP Response Body: %@", responseObject);
 																		 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 																			 NSLog(@"HTTP Request failed: %@", error);
@@ -177,7 +177,7 @@ void POSTMultipartBody()
 	// Fetch Request
 	AFHTTPRequestOperation *operation = [manager HTTPRequestOperationWithRequest:request
 																		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-																			 NSLog(@"Response HTTP Status Code: %ld", [operation.response statusCode]);
+																			 NSLog(@"HTTP Response Status Code: %ld", [operation.response statusCode]);
 																			 NSLog(@"Response HTTP Response Body: %@", responseObject);
 																		 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 																			 NSLog(@"HTTP Request failed: %@", error);
