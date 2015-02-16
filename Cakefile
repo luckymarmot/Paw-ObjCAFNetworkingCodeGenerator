@@ -75,23 +75,9 @@ archive = (callback) ->
             console.error "zip returned with error code: #{ code }"
             process.exit(code=code)
 
-# build_test: build the test suite
-build_test = (callback) ->
-    child = exec "set -o pipefail && xcodebuild -workspace './test/ObjCAFNetworkingCodeGenerator.xcworkspace' -scheme ObjCAFNetworkingCodeGenerator clean build | xcpretty -c"
-    child.stderr.on 'data', (data) ->
-        process.stderr.write data.toString()
-    child.stdout.on 'data', (data) ->
-        process.stdout.write data.toString()
-    child.on 'exit', (code) ->
-        if code is 0
-            callback?()
-        else
-            console.error "build test: #{ code }"
-            process.exit(code=code)
-
 # test: run the test suite
 test = (callback) ->
-    child = exec "./test/Build/Products/Debug/ObjCAFNetworkingCodeGenerator"
+    child = exec "xctool -workspace './test/ObjCAFNetworkingCodeGenerator.xcworkspace' -scheme ObjCAFNetworkingCodeGeneratorTests run-tests"
     child.stderr.on 'data', (data) ->
         process.stderr.write data.toString()
     child.stdout.on 'data', (data) ->
@@ -106,12 +92,8 @@ test = (callback) ->
 task 'build', ->
     build()
 
-task 'build_test', ->
-    build_test()
-
 task 'test', ->
-    build_test () ->
-        test()
+    test()
 
 task 'install', ->
     build () ->
