@@ -87,8 +87,8 @@ ObjCAFNetworkingCodeGenerator = ->
         else if typeof(object) == 'boolean'
             s = "@#{if object then "YES" else "NO"}"
         else if typeof(object) == 'object'
-            indent_str = Array(indent + 1).join('\t')
-            indent_str_children = Array(indent + 2).join('\t')
+            indent_str = Array(indent + 2).join('\t')
+            indent_str_children = Array(indent + 3).join('\t')
             if object.length?
                 s = "@[\n" +
                     ("#{indent_str_children}#{@json_body_object(value, indent+1)}" for value in object).join(',\n') +
