@@ -1,4 +1,4 @@
-language: node_js
+language: objective-c
 node_js:
 - '0.10'
 before_install:
@@ -17,3 +17,5 @@ deploy:
     tags: true
     all_branches: true
     repo: luckymarmot/Paw-ObjCAFNetworkingCodeGenerator
+os:
+  - osx
