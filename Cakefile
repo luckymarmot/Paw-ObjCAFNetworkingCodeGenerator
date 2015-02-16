@@ -94,7 +94,7 @@ archive = (callback) ->
 test = (callback) ->
     console.log "Building and Running Tests..."
 
-    child = exec "xctool -workspace './test/ObjCAFNetworkingCodeGenerator.xcworkspace' -scheme ObjCAFNetworkingCodeGeneratorTests build run-tests"
+    child = exec "set -o pipefail && xcodebuild test -workspace './test/ObjCAFNetworkingCodeGenerator.xcworkspace' -scheme ObjCAFNetworkingCodeGeneratorTests | xcpretty -c"
     child.stderr.on 'data', (data) ->
         process.stderr.write data.toString()
     child.stdout.on 'data', (data) ->
