@@ -1,4 +1,4 @@
-{spawn, exec} = require 'child_process'
+{exec} = require 'child_process'
 {ncp} = require 'ncp'
 mkdirp = require 'mkdirp'
 fs = require 'fs'
@@ -14,7 +14,7 @@ build_dir = "#{ build_root_dir }/#{ identifier }"
 build_coffee = (callback) ->
     console.log "Building Coffee Scripts..."
 
-    coffee = spawn 'coffee', ['-c', '-o', build_dir, file]
+    coffee = exec "coffee -c -o #{ build_dir } #{ file }"
     coffee.stderr.on 'data', (data) ->
         process.stderr.write data.toString()
     coffee.stdout.on 'data', (data) ->
@@ -77,7 +77,7 @@ archive = (callback) ->
         fs.unlinkSync zip_file
 
     # zip
-    zip = spawn 'zip', ["-r", zip_file, "#{ identifier }/"]
+    zip = exec "zip -r #{ zip_file } #{ identifier }/"
     zip.stderr.on 'data', (data) ->
         process.stderr.write data.toString()
     zip.stdout.on 'data', (data) ->
