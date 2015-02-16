@@ -35,7 +35,7 @@ cake watch
 An Xcode Project is present in the `/test` folder.
 
 ```shell
-pod install
+pod install --project-directory=./test/
 ```
 
 #### Build & Run Tests

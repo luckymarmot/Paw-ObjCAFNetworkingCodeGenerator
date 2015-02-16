@@ -77,7 +77,7 @@ archive = (callback) ->
 
 # test: run the test suite
 test = (callback) ->
-    child = exec "xctool -workspace './test/ObjCAFNetworkingCodeGenerator.xcworkspace' -scheme ObjCAFNetworkingCodeGeneratorTests run-tests"
+    child = exec "xctool -workspace './test/ObjCAFNetworkingCodeGenerator.xcworkspace' -scheme ObjCAFNetworkingCodeGeneratorTests build run-tests"
     child.stderr.on 'data', (data) ->
         process.stderr.write data.toString()
     child.stdout.on 'data', (data) ->
