@@ -10,7 +10,7 @@ script:
 deploy:
   provider: releases
   api_key:
-    secure: by9x9mMPf7QcZEu1XsCCpTqM8CUgVs5+KZfmMNCE/bGuAn94pSdcKADiZFuQhRyJBiXT8V7yUOdeEtkgyhVNLfceoqStkWhFXWT1iILfiOzOrHsH2sjSfBFfvD2zAoAy7JBeqdiPbBsvuZfrdYS5QmZ654A6mHokeUnM0t42ePs=
+    secure: ZVwjUUbF+Q+netNasYd2wH8jwoSiFQ0RdCAXJDI19flyaEajYvULNm+KpLHo9U0lRWmoNK/sWrvshd+v5qI2nN/NJr/XtzeXo3FMUHDOaPszsmcN/caup+G69gfDzbbg2y+DJSoSVw93Km31kPt6JgTub2bIRPNsBqyxYuo8QQ8=
   file: build/ObjCAFNetworkingCodeGenerator.zip
   skip_cleanup: true
   on:
