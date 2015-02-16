@@ -14,7 +14,7 @@ build_dir = "#{ build_root_dir }/#{ identifier }"
 build_coffee = (callback) ->
     console.log "Building Coffee Scripts..."
 
-    coffee = exec "coffee -c -o #{ build_dir } #{ file }"
+    coffee = exec "./node_modules/coffee-script/bin/coffee -c -o #{ build_dir } #{ file }"
     coffee.stderr.on 'data', (data) ->
         process.stderr.write data.toString()
     coffee.stdout.on 'data', (data) ->
