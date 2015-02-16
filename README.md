@@ -39,7 +39,7 @@ pod install
 #### Build
 
 ```shell
-set -o pipefail && xcodebuild -workspace 'ObjCAFNetworkingCodeGeneratorTest/ObjCAFNetworkingCodeGenerator.xcworkspace' -scheme ObjCAFNetworkingCodeGenerator clean build | xcpretty -c
+set -o pipefail && xcodebuild -workspace 'test/ObjCAFNetworkingCodeGenerator.xcworkspace' -scheme ObjCAFNetworkingCodeGenerator clean build | xcpretty -c
 ```
 
 ## License
