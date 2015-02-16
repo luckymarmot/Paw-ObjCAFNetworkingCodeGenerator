@@ -1,4 +1,4 @@
-{spawn} = require 'child_process'
+{spawn, exec} = require 'child_process'
 {ncp} = require 'ncp'
 mkdirp = require 'mkdirp'
 fs = require 'fs'
@@ -22,6 +22,7 @@ build_coffee = (callback) ->
             callback?()
         else
             console.error "Build failed with error: #{ code }"
+            process.exit(code=code)
 
 # copy files to build directory
 build_copy = () ->
@@ -72,13 +73,45 @@ archive = (callback) ->
             callback?()
         else
             console.error "zip returned with error code: #{ code }"
+            process.exit(code=code)
+
+# build_test: build the test suite
+build_test = (callback) ->
+    child = exec "set -o pipefail && xcodebuild -workspace './test/ObjCAFNetworkingCodeGenerator.xcworkspace' -scheme ObjCAFNetworkingCodeGenerator clean build | xcpretty -c"
+    child.stderr.on 'data', (data) ->
+        process.stderr.write data.toString()
+    child.stdout.on 'data', (data) ->
+        process.stdout.write data.toString()
+    child.on 'exit', (code) ->
+        if code is 0
+            callback?()
+        else
+            console.error "build test: #{ code }"
+            process.exit(code=code)
+
+# test: run the test suite
+test = (callback) ->
+    child = exec "./test/Build/Products/Debug/ObjCAFNetworkingCodeGenerator"
+    child.stderr.on 'data', (data) ->
+        process.stderr.write data.toString()
+    child.stdout.on 'data', (data) ->
+        process.stdout.write data.toString()
+    child.on 'exit', (code) ->
+        if code is 0
+            callback?()
+        else
+            console.error "build test: #{ code }"
+            process.exit(code=code)
 
 task 'build', ->
     build()
 
+task 'build_test', ->
+    build_test()
+
 task 'test', ->
-    build () ->
-        # no test to run
+    build_test () ->
+        test()
 
 task 'install', ->
     build () ->

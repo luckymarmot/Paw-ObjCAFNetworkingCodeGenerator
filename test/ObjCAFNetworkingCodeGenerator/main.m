@@ -10,8 +10,14 @@
 #import "AFNetworking.h"
 #import "AFNetworkActivityLogger.h"
 
+NSUInteger requestsCount = 0;
+NSUInteger requestsSuccessCount = 0;
+NSUInteger requestsFailureCount = 0;
+
 void GETRequest()
 {
+    requestsCount++;
+    
 	// GET (Headers & URL Params) (GET http://httpbin.org/get)
 	
 	// Create manager
@@ -32,8 +38,12 @@ void GETRequest()
 																		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
 																			 NSLog(@"HTTP Response Status Code: %ld", [operation.response statusCode]);
 																			 NSLog(@"Response HTTP Response Body: %@", responseObject);
+                                                                             
+                                                                             requestsSuccessCount++;
 																		 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 																			 NSLog(@"HTTP Request failed: %@", error);
+                                                                             
+                                                                             requestsFailureCount++;
 																		 }];
 	
 	[manager.operationQueue addOperation:operation];
@@ -41,6 +51,8 @@ void GETRequest()
 
 void POSTJsonRequest()
 {
+    requestsCount++;
+    
 	// POST JSON Body (POST http://httpbin.org/post)
 	
 	// Create manager
@@ -70,8 +82,12 @@ void POSTJsonRequest()
 																		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
 																			 NSLog(@"HTTP Response Status Code: %ld", [operation.response statusCode]);
 																			 NSLog(@"Response HTTP Response Body: %@", responseObject);
+                                                                             
+                                                                             requestsSuccessCount++;
 																		 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 																			 NSLog(@"HTTP Request failed: %@", error);
+                                                                             
+                                                                             requestsFailureCount++;
 																		 }];
 	
 	[manager.operationQueue addOperation:operation];
@@ -79,6 +95,8 @@ void POSTJsonRequest()
 
 void POSTTextBody()
 {
+    requestsCount++;
+    
 	// POST Text Body (POST http://httpbin.org/post)
 
 	// Create manager
@@ -96,8 +114,12 @@ void POSTTextBody()
 		success:^(AFHTTPRequestOperation *operation, id responseObject) {
 			NSLog(@"HTTP Response Status Code: %ld", [operation.response statusCode]);
 			NSLog(@"HTTP Response Body: %@", responseObject);
+            
+            requestsSuccessCount++;
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 			NSLog(@"HTTP Request failed: %@", error);
+        
+            requestsFailureCount++;
 	}];
 
 	[manager.operationQueue addOperation:operation];
@@ -105,6 +127,8 @@ void POSTTextBody()
 
 void POSTLongTextBody()
 {
+    requestsCount++;
+    
 	// PUT Long Text Body (PUT http://httpbin.org/put)
 	
 	// Create manager
@@ -122,8 +146,12 @@ void POSTLongTextBody()
 																							   success:^(AFHTTPRequestOperation *operation, id responseObject) {
 																								   NSLog(@"HTTP Response Status Code: %ld", [operation.response statusCode]);
 																								   NSLog(@"Response HTTP Response Body: %@", responseObject);
+                                                                                                   
+                                                                                                   requestsSuccessCount++;
 																							   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 																								   NSLog(@"HTTP Request failed: %@", error);
+                                                                                                   
+                                                                                                   requestsFailureCount++;
 																							   }];
 						  
 						  [manager.operationQueue addOperation:operation];
@@ -131,6 +159,8 @@ void POSTLongTextBody()
 
 void POSTFormEncodedURLBody()
 {
+    requestsCount++;
+    
 	// POST Form URL-Encoded (POST http://httpbin.org/post)
 	
 	// Create manager
@@ -150,8 +180,12 @@ void POSTFormEncodedURLBody()
 																		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
 																			 NSLog(@"HTTP Response Status Code: %ld", [operation.response statusCode]);
 																			 NSLog(@"Response HTTP Response Body: %@", responseObject);
+                                                                             
+                                                                             requestsSuccessCount++;
 																		 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 																			 NSLog(@"HTTP Request failed: %@", error);
+                                                                             
+                                                                             requestsFailureCount++;
 																		 }];
 	
 	[manager.operationQueue addOperation:operation];
@@ -160,6 +194,8 @@ void POSTFormEncodedURLBody()
 
 void POSTMultipartBody()
 {
+    requestsCount++;
+    
 	// POST Multipart (POST http://httpbin.org/post)
 	
 	// Create manager
@@ -179,8 +215,12 @@ void POSTMultipartBody()
 																		 success:^(AFHTTPRequestOperation *operation, id responseObject) {
 																			 NSLog(@"HTTP Response Status Code: %ld", [operation.response statusCode]);
 																			 NSLog(@"Response HTTP Response Body: %@", responseObject);
+                                                                             
+                                                                             requestsSuccessCount++;
 																		 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 																			 NSLog(@"HTTP Request failed: %@", error);
+                                                                             
+                                                                             requestsFailureCount++;
 																		 }];
 	
 	[manager.operationQueue addOperation:operation];
@@ -203,7 +243,9 @@ int main(int argc, const char * argv[]) {
 		POSTMultipartBody();
 	}
 	while ([runLoop runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]]) {
-		// this is intentionally blank
+        if (requestsCount <= requestsSuccessCount + requestsFailureCount) {
+            break;
+        }
 	}
-	return 0;
+    return requestsFailureCount == 0 ? 0 : 1;
 }
