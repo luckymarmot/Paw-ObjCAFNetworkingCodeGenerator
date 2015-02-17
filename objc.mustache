@@ -9,13 +9,13 @@
 	{{^has_params_and_body}}
 	{{#url.has_params}}
 	// Create request
-	NSDictionary* URLParams = @{
+	NSDictionary* URLParameters = @{
 	{{#url.params}}
-		@"{{{name}}}": @"{{{value}}}",
+		@"{{{name}}}":@"{{{value}}}",
 	{{/url.params}}
 	};
 	
-	NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"{{{request.method}}}" URLString:@"{{{url.base}}}" parameters:URLParams error:NULL];
+	NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"{{{request.method}}}" URLString:@"{{{url.base}}}" parameters:URLParameters error:NULL];
 	
 	{{/url.has_params}}
 	{{/has_params_and_body}}
@@ -24,7 +24,7 @@
 	// Form URL-Encoded Body
 	NSDictionary* bodyParameters = @{
 	{{#body.url_encoded_body}}
-		@"{{{name}}}": @"{{{value}}}",
+		@"{{{name}}}":@"{{{value}}}",
 	{{/body.url_encoded_body}}
 	};
 	
@@ -41,7 +41,7 @@
 	// Form Multipart Body
 	NSDictionary* bodyParameters = @{
 	{{#body.multipart_body}}
-		@"{{{name}}}": @"{{{value}}}",
+		@"{{{name}}}":@"{{{value}}}",
 	{{/body.multipart_body}}
 	};
 	
@@ -73,7 +73,7 @@
 	NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:URL];
 	[request setHTTPMethod:@"{{{request.method}}}"];
 	[request setHTTPBody:[@"{{{body.raw_body}}}" dataUsingEncoding:NSUTF8StringEncoding]];
-	[request setValue: @"" forHTTPHeaderField:@"Content-Type"];
+	[request setValue:@"" forHTTPHeaderField:@"Content-Type"];
 
 	{{/body.has_raw_body}}
 	{{! ----- }}
@@ -83,7 +83,7 @@
 	NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:URL];
 	[request setHTTPMethod:@"{{{request.method}}}"];
 	[request setHTTPBody:@"Set your own body data" dataUsingEncoding:NSUTF8StringEncoding]];
-	[request setValue: @"" forHTTPHeaderField:@"Content-Type"];
+	[request setValue:@"" forHTTPHeaderField:@"Content-Type"];
 
 	{{/body.has_long_body}}
 	{{! ----- }}
