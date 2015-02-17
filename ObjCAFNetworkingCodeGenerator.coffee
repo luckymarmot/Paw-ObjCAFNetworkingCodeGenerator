@@ -17,7 +17,7 @@ ObjCAFNetworkingCodeGenerator = ->
         } for name, value of url_params_object)
 
         return {
-            "fullpath" : request.url
+            "fullpath": request.url
             "base": addslashes (() ->
                 _uri = URI request.url
                 _uri.search("")
