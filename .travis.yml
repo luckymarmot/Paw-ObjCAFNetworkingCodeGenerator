@@ -1,15 +1,12 @@
-language: objective-c
+language: node_js
 node_js:
 - '0.10'
 before_install:
 - npm install coffee-script
-install:
-- pod install --project-directory=./test/
-- npm install
 before_script:
 - ./node_modules/.bin/cake archive
 script:
-- ./node_modules/.bin/cake test
+- ls -l
 deploy:
   provider: releases
   api_key:
@@ -20,5 +17,3 @@ deploy:
     tags: true
     all_branches: true
     repo: luckymarmot/Paw-ObjCAFNetworkingCodeGenerator
-os:
-  - osx
