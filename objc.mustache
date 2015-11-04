@@ -14,10 +14,14 @@
 		@"{{{name}}}":@"{{{value}}}",
 	{{/url.params}}
 	};
-	
 	NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"{{{request.method}}}" URLString:@"{{{url.base}}}" parameters:URLParameters error:NULL];
-	
+
 	{{/url.has_params}}
+  {{^url.has_params}}
+  // Create request
+  NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"{{{request.method}}}" URLString:@"{{{url.base}}}" parameters:nil error:NULL];
+
+  {{/url.has_params}}
 	{{/has_params_and_body}}
 	{{! ----- }}
 	{{#body.has_url_encoded_body}}
