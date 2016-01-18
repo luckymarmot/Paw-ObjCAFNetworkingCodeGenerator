@@ -11,6 +11,14 @@
 addslashes = (str) ->
     ("#{str}").replace(/[\\"]/g, '\\$&')
 
+slugify = (str) ->
+    re = /([a-zA-Z0-9])([a-zA-Z0-9]*)/g
+    l = []
+    while (m = re.exec(str))
+        if (m)
+            l.push(m[1].toUpperCase() + m[2].toLowerCase())
+    return l.join('')
+
 ObjCAFNetworkingCodeGenerator = ->
 
     @url = (request) ->
@@ -122,11 +130,12 @@ ObjCAFNetworkingCodeGenerator = ->
         request = context.getCurrentRequest()
 
         view =
-            "request": context.getCurrentRequest()
+            "request": request
             "method": request.method.toUpperCase()
             "url": @url request
             "headers": @headers request
             "body": @body request
+            "codeSlug": slugify(request.name)
             
         view["has_params_and_body"] = true if view.url.has_params and view.body
 
